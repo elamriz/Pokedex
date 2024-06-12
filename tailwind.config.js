@@ -11,7 +11,6 @@ export default {
         './resources/**/*.js',
         './resources/**/*.vue',
     ],
-
     theme: {
         extend: {
             colors: {
@@ -20,12 +19,16 @@ export default {
                 grass: '#00FF00',  // green
                 // Ajoutez d'autres couleurs personnalisées ici si nécessaire
             },
-        
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
         },
     },
-
     plugins: [forms],
+    safelist: [
+        'text-fire',
+        'text-water',
+        'text-grass',
+        // Ajoutez d'autres classes personnalisées ici si nécessaire
+    ],
 };

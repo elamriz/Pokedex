@@ -6,7 +6,7 @@ use Livewire\Component;
 use App\Models\Pokemon;
 use Livewire\Attributes\Layout;
 
- #[Layout('layouts.app')]
+#[Layout('layouts.guest')]
 
 class ShowPokemon extends Component
 {

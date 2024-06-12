@@ -8,7 +8,7 @@ use App\Models\Pokemon;
 use App\Models\Type;
 use Livewire\Attributes\Layout;
 
-#[Layout('layouts.app')]
+#[Layout('layouts.guest')]
 class PokemonList extends Component
 {
     #[Url]

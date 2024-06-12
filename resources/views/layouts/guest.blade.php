@@ -13,16 +13,24 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        <!-- Custom Styles -->
+        <style>
+            body {
+                background: url('{{ asset('storage/img/bg.jpg') }}') no-repeat center center fixed;
+                background-size: cover;
+            }
+        </style>
     </head>
-    <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-            <div>
+    <body class="font-sans text-gray-900 antialiased bg-cover">
+        <div class="min-h-screen flex flex-col items-center pt-6 sm:pt-0 bg-gray-100 bg-opacity-75">
+            <div class="flex justify-center items-center bg-yellow-500 p-4 rounded-full shadow-lg">
                 <a href="/" wire:navigate>
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+                    <img src="{{ asset('storage/img/logo.png') }}"  alt="Pokemon Logo" class="w-32 h-32"/>
                 </a>
             </div>
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+            <div class="w-full mt-6 px-6 py-4 bg-white bg-opacity-90 shadow-md overflow-hidden sm:rounded-lg sm:max-w-md">
                 {{ $slot }}
             </div>
         </div>
