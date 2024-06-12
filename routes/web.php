@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Livewire\ShowPokemon;
 use App\Livewire\PokemonList;
+use App\Livewire\PokemonManager;
 
 Route::get('/pokemon/{pokemon}', ShowPokemon::class)->name('pokemon.show');
 Route::get('/pokemons', PokemonList::class)->name('pokemon.list');
@@ -28,5 +29,8 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
-require __DIR__.'/auth.php';
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/pokemon-manager', PokemonManager::class)->name('pokemon.manager');
+});
 
+require __DIR__.'/auth.php';
