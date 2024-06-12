@@ -1,0 +1,1 @@
+reglage de la couleur des types via tailwind.config.js
