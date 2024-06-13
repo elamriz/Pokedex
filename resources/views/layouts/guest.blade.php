@@ -17,20 +17,27 @@
     <!-- Custom Styles -->
     <style>
         body {
-            background: url('{{ asset('storage/img/bg.jpg') }}') no-repeat center center fixed;
-            background-size: cover;
-        }
+    /* Définissez le fond avec votre image choisie */
+    background: url('{{ asset('storage/img/bg2.jpg') }}') repeat center center fixed;
+    background-size: 1000px; /* Assure que l'image couvre toute la page */
+
+    /* Ajoutez une couleur de fond avec opacité avant l'image */
+    background-color: rgba(0, 0, 0, 0.5); /* Noir avec 50% d'opacité */
+    
+    /* Assurez-vous que la couleur de fond est sous l'image */
+    background-blend-mode: darken;
+}
     </style>
 </head>
-<body class="font-sans text-gray-900 antialiased bg-cover">
-    <div class="min-h-screen flex flex-col items-center bg-gray-800 bg-opacity-60">
-        <div class="flex justify-center items-center bg-yellow-500 p-4 rounded-full shadow-lg mb-6">
-            <a href="/pokemons" wire:navigate>
+<body>
+<div class="min-h-screen flex flex-col mt-8 items-center">
+    <div class="flex justify-center items-center p-6 mb-8 rounded-3xl shadow-2xl" style="background: rgba(255, 255, 0);">
+            <a href="/pokemons" wire:navigate class="transform hover:scale-110 transition duration-300 ease-in-out">
                 <img src="{{ asset('storage/img/logo.png') }}" alt="Pokemon Logo" class="w-32 h-32"/>
             </a>
         </div>
 
-        <div class="">
+        <div class="p-6 rounded-lg shadow-xl" style="background: rgba(0, 0, 0, 0.2);">
             {{ $slot }}
         </div>
     </div>
