@@ -21,8 +21,12 @@ class Type extends Model
         return $this->hasMany(Attack::class);
     }
 
-    public function getColorClassAttribute()
+    public function get2ColorClassAttribute()
     {
         return 'text-' . strtolower($this->name);
+    }
+    public function getColorClassAttribute()
+    {
+        return 'bg-' . strtolower($this->color) . '-600';
     }
 }

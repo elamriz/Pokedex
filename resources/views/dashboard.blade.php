@@ -22,6 +22,26 @@
                     </a>
                 </div>
             </div>
+
+            <!-- Section to manage Attacks -->
+            <div class="mt-8 bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900">
+                    <h3 class="text-lg font-semibold mb-4">Manage Attacks</h3>
+                    <a href="{{ route('manage.attack') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                        Go to Attack Manager
+                    </a>
+                </div>
+            </div>
+
+            <!-- Section to manage Types -->
+            <div class="mt-8 bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900">
+                    <h3 class="text-lg font-semibold mb-4">Manage Types</h3>
+                    <a href="{{ route('type.manager') }}" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">
+                        Go to Type Manager
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </x-app-layout>

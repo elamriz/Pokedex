@@ -17,6 +17,19 @@ export default {
                 fire: '#FF0000',   // red
                 water: '#41c3e0',  // blue
                 grass: '#00FF00',  // green
+                red: {
+                    600: '#e3342f',
+                  },
+                  green: {
+                    600: '#38c172',
+                  },
+                  blue: {
+                    600: '#3490dc',
+                  },
+                  yellow: {
+                    600: '#ffed4a',
+                  },
+          
                 // Ajoutez d'autres couleurs personnalisées ici si nécessaire
             },
             fontFamily: {

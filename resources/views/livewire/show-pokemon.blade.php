@@ -12,12 +12,12 @@
             <p class="text-xl"><strong>Weight:</strong> {{ $pokemon->weight }} kg</p>
             <p class="text-xl"><strong>Height:</strong> {{ $pokemon->height }} m</p>
             <p class="text-xl"><strong>Type 1:</strong>
-                <span class="px-3 py-1 rounded-full text-white {{ $pokemon->type1->color_class }}">{{ $pokemon->type1->name }}</span>
+                <span class="px-3 py-1 rounded-full {{ $pokemon->type1->color_class }}">{{ $pokemon->type1->name }}</span>
             </p>
 
             @if($pokemon->type2)
                 <p class="text-xl"><strong>Type 2:</strong>
-                    <span class="px-3 py-1 rounded-full text-white {{ $pokemon->type2->color_class }}">{{ $pokemon->type2->name }}</span>
+                    <span class="px-3 py-1 rounded-full {{ $pokemon->type2->color_class }}">{{ $pokemon->type2->name }}</span>
                 </p>
             @endif
         </div>
