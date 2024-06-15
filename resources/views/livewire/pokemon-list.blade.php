@@ -30,7 +30,7 @@
                 <a href="{{ route('pokemon.show', $pokemon) }}" class="text-gray-800 hover:underline">
                     {{ $pokemon->name }}
                 </a>
-                <p class="text-gray-600">HP: {{ $pokemon->hp }}</p>
+                <p class="text-gray-600 pokemon-id">#{{ str_pad($pokemon->id, 3, '0', STR_PAD_LEFT) }}</p>
             </div>
         @endforeach
     </div>

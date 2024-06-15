@@ -10,6 +10,7 @@ use App\Livewire\TypeManager;
 Route::get('/pokemon/{pokemon}', ShowPokemon::class)->name('pokemon.show');
 Route::get('/pokemons', PokemonList::class)->name('pokemon.list');
 Route::get('/pokemon/edit/{pokemon}', \App\Livewire\EditPokemon::class)->name('pokemon.edit');
+Route::get('/pokemon-create', \App\Livewire\CreatePokemon::class)->name('pokemon.create');
 
 
 /*
