@@ -11,16 +11,17 @@ use Livewire\Attributes\Layout;
 
 #[Layout('layouts.app')]
 
-
 class CreatePokemon extends Component
 {
     use WithFileUploads;
 
-    public $name, $hp, $weight, $height, $image, $type1_id, $type2_id;
+    public $name;
+    public $hp;
+    public $weight;
+    public $height;
     public $photo;
     public $photoPreview; // Propriété pour l'aperçu de l'image
-    public $selectedType;
-    public $selectedAttack;
+    public $selectedTypes = [];
     public $selectedAttacks = [];
     public $availableAttacks = [];
     public $attackDamageLevels = [];
@@ -30,14 +31,35 @@ class CreatePokemon extends Component
         $this->availableAttacks = [];
     }
 
+    protected function rules()
+    {
+        return [
+            'name' => 'required|string|max:255',
+            'hp' => 'required|numeric|min:1|max:150',
+            'weight' => 'required|numeric|min:0',
+            'height' => 'required|numeric|min:0',
+            'photo' => 'nullable|image|max:1024', // 1MB Max
+            'selectedTypes' => 'required|array|min:1|max:2',
+            'selectedTypes.*' => 'exists:types,id',
+            'selectedAttacks' => 'required|array|min:1',
+            'selectedAttacks.*' => 'exists:attacks,id',
+        ];
+    }
+
     public function selectType($typeId)
     {
-        $this->selectedType = $typeId;
-        if ($typeId) {
-            $this->availableAttacks = Attack::where('type_id', $typeId)->get();
+        if (in_array($typeId, $this->selectedTypes)) {
+            $this->selectedTypes = array_diff($this->selectedTypes, [$typeId]);
         } else {
-            $this->availableAttacks = [];
+            if (count($this->selectedTypes) < 2) {
+                $this->selectedTypes[] = $typeId;
+            }
         }
+    }
+
+    public function selectAttackType($typeId)
+    {
+        $this->availableAttacks = Attack::where('type_id', $typeId)->get();
     }
 
     public function updatedPhoto()
@@ -62,23 +84,9 @@ class CreatePokemon extends Component
         }
     }
 
-    public function render()
-    {
-        $types = Type::all();
-        return view('livewire.create-pokemon', compact('types'));
-    }
-
     public function create()
     {
-        $this->validate([
-            'name' => 'required',
-            'hp' => 'required|numeric',
-            'weight' => 'required|numeric',
-            'height' => 'required|numeric',
-            'photo' => 'nullable|image|max:1024',
-            'type1_id' => 'required|exists:types,id',
-            'type2_id' => 'nullable|exists:types,id',
-        ]);
+        $this->validate();
 
         $pokemon = new Pokemon();
         if ($this->photo) {
@@ -90,13 +98,29 @@ class CreatePokemon extends Component
         $pokemon->hp = $this->hp;
         $pokemon->weight = $this->weight;
         $pokemon->height = $this->height;
-        $pokemon->type1_id = $this->type1_id;
-        $pokemon->type2_id = $this->type2_id ?: null;
+        $pokemon->type1_id = $this->selectedTypes[0];
+        $pokemon->type2_id = $this->selectedTypes[1] ?? null;
         $pokemon->save();
         $pokemon->attacks()->sync($this->selectedAttacks);
 
         session()->flash('message', 'Pokemon créé avec succès.');
 
         return redirect()->route('pokemon.manager');
+    }
+    public function toggleType($typeId)
+    {
+        if (in_array($typeId, $this->selectedTypes)) {
+            $this->selectedTypes = array_diff($this->selectedTypes, [$typeId]);
+        } else {
+            if (count($this->selectedTypes) < 2) {
+                $this->selectedTypes[] = $typeId;
+            }
+        }
+    }
+
+    public function render()
+    {
+        $types = Type::all();
+        return view('livewire.create-pokemon', compact('types'));
     }
 }

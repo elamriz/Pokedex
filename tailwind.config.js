@@ -37,7 +37,10 @@ export default {
             },
         },
     },
-    plugins: [forms],
+    plugins: [
+      require('daisyui'),
+      forms
+    ],
     safelist: [
         'text-fire',
         'text-water',

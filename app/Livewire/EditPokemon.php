@@ -7,20 +7,18 @@ use App\Models\Pokemon;
 use App\Models\Type;
 use App\Models\Attack;
 use Livewire\WithFileUploads;
-
 use Livewire\Attributes\Layout;
 
 #[Layout('layouts.app')]
-
 class EditPokemon extends Component
 {
     use WithFileUploads;
 
     public $pokemon;
-    public $name, $hp, $weight, $height, $image, $type1_id, $type2_id;
+    public $name, $hp, $weight, $height, $image, $selectedTypes = [];
     public $photo;
     public $selectedAttacks = [];
-    public $availableAttacks;
+    public $availableAttacks = [];
 
     public function mount(Pokemon $pokemon)
     {
@@ -30,16 +28,19 @@ class EditPokemon extends Component
         $this->weight = $pokemon->weight;
         $this->height = $pokemon->height;
         $this->image = $pokemon->image;
-        $this->type1_id = $pokemon->type1_id;
-        $this->type2_id = $pokemon->type2_id;
+        $this->selectedTypes = array_filter([$pokemon->type1_id, $pokemon->type2_id]);
         $this->selectedAttacks = $pokemon->attacks->pluck('id')->toArray();
-        $this->availableAttacks = Attack::with('type')->get();
     }
 
     public function render()
     {
         $types = Type::all();
         return view('livewire.edit-pokemon', compact('types'));
+    }
+
+    public function selectAttackType($typeId)
+    {
+        $this->availableAttacks = Attack::where('type_id', $typeId)->get();
     }
 
     public function update()
@@ -50,8 +51,8 @@ class EditPokemon extends Component
             'weight' => 'required|numeric',
             'height' => 'required|numeric',
             'photo' => 'nullable|image|max:1024',
-            'type1_id' => 'required|exists:types,id',
-            'type2_id' => 'nullable|exists:types,id',
+            'selectedTypes' => 'required|array|min:1|max:2',
+            'selectedTypes.*' => 'exists:types,id',
         ]);
 
         if ($this->photo) {
@@ -63,14 +64,25 @@ class EditPokemon extends Component
         $this->pokemon->hp = $this->hp;
         $this->pokemon->weight = $this->weight;
         $this->pokemon->height = $this->height;
-        $this->pokemon->type1_id = $this->type1_id;
-        $this->pokemon->type2_id = $this->type2_id;
+        $this->pokemon->type1_id = $this->selectedTypes[0] ?? null;
+        $this->pokemon->type2_id = $this->selectedTypes[1] ?? null;
         $this->pokemon->attacks()->sync($this->selectedAttacks);
         $this->pokemon->save();
 
-        session()->flash('message', 'Pokemon mis à jour avec succès.');
+        session()->flash('message', 'Pokémon mis à jour avec succès.');
 
         return redirect()->route('pokemon.manager');
+    }
+
+    public function toggleType($typeId)
+    {
+        if (in_array($typeId, $this->selectedTypes)) {
+            $this->selectedTypes = array_diff($this->selectedTypes, [$typeId]);
+        } else {
+            if (count($this->selectedTypes) < 2) {
+                $this->selectedTypes[] = $typeId;
+            }
+        }
     }
 
     public function toggleAttack($attackId)

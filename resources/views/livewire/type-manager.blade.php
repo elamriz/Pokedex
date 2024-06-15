@@ -30,6 +30,12 @@
                 @error('color') <span class="text-red-500">{{ $message }}</span> @enderror
             </div>
 
+            <div>
+                <label for="image" class="block text-sm font-medium text-gray-700">Image (URL)</label>
+                <input type="text" wire:model="image" id="image" placeholder="URL de l'image" class="border rounded p-2 w-full">
+                @error('image') <span class="text-red-500">{{ $message }}</span> @enderror
+            </div>
+
             <div class="flex justify-between">
                 <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">
                     {{ $isEditMode ? 'Mettre à jour' : 'Ajouter' }}
@@ -50,6 +56,7 @@
                 <tr>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Couleur</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Image</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                 </tr>
             </thead>
@@ -60,6 +67,11 @@
                         <td class="px-6 py-4 whitespace-nowrap text-sm">
                             <span class="inline-block w-4 h-4 rounded-full" style="background-color: {{ $type->color }};"></span>
                             <span class="ml-2 text-gray-700">{{ $type->color }}</span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                            @if($type->image)
+                                <img src="{{ $type->image }}" alt="{{ $type->name }}" class="inline-block w-6 h-6"/>
+                            @endif
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                             <button wire:click="edit({{ $type->id }})" class="text-indigo-600 hover:text-indigo-900">Éditer</button>
@@ -79,7 +91,6 @@
                     <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
                 </div>
 
-                <!-- This element is to trick the browser into centering the modal contents. -->
                 <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
 
                 <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
