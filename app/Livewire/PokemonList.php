@@ -36,6 +36,7 @@ class PokemonList extends Component
         return view('livewire.pokemon-list', [
             'pokemons' => $pokemons,
             'types' => $types,
+            'title' => 'Liste des Pokémons'
         ]);
     }
 }

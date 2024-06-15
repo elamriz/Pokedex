@@ -1,5 +1,5 @@
-<div >
-    <div class="w-full max-w-4xl bg-white p-8 rounded-2xl shadow-xl transition duration-500 hover:shadow-2xl">
+<div class="max-w-4xl mx-auto p-8 bg-white rounded-lg shadow-lg">
+    <div>
         <h1 class="text-5xl font-bold mb-8 text-center text-gray-900">{{ $pokemon->name }}</h1>
 
         <!-- Image du Pokémon -->
@@ -8,16 +8,22 @@
         </div>
 
         <div class="mb-8 space-y-4">
-            <p class="text-xl"><strong>HP:</strong> {{ $pokemon->hp }}</p>
+            <div class="flex items-center space-x-2">
+                <span class="text-xl font-semibold">HP:</span>
+                <div class="w-full bg-gray-200 rounded-full h-6 shadow-inner">
+                    <div class="bg-red-500 h-6 rounded-full" style="width: {{ ($pokemon->hp / 255) * 100 }}%;"></div>
+                </div>
+                <span class="text-xl font-semibold">{{ $pokemon->hp }}</span>
+            </div>
             <p class="text-xl"><strong>Weight:</strong> {{ $pokemon->weight }} kg</p>
             <p class="text-xl"><strong>Height:</strong> {{ $pokemon->height }} m</p>
             <p class="text-xl"><strong>Type 1:</strong>
-                <span class="px-3 py-1 rounded-full {{ $pokemon->type1->color_class }}">{{ $pokemon->type1->name }}</span>
+            <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold text-white shadow-md" style="background-color: {{ $pokemon->type1->color }}">{{ $pokemon->type1->name }}</span>
             </p>
 
             @if($pokemon->type2)
                 <p class="text-xl"><strong>Type 2:</strong>
-                    <span class="px-3 py-1 rounded-full {{ $pokemon->type2->color_class }}">{{ $pokemon->type2->name }}</span>
+                <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold text-white shadow-md" style="background-color: {{ $pokemon->type2->color }}">{{ $pokemon->type2->name }}</span>
                 </p>
             @endif
         </div>

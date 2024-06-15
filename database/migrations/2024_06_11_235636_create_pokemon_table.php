@@ -17,8 +17,8 @@ class CreatePokemonTable extends Migration
             $table->string('image')->nullable(); 
             $table->unsignedBigInteger('type1_id');
             $table->unsignedBigInteger('type2_id')->nullable();
-            $table->foreign('type1_id')->references('id')->on('types');
-            $table->foreign('type2_id')->references('id')->on('types');
+            $table->foreign('type1_id')->references('id')->on('types')->onDelete('cascade');
+            $table->foreign('type2_id')->references('id')->on('types')->onDelete('cascade');
             $table->timestamps();
         });
     }

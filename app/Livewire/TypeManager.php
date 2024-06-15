@@ -4,16 +4,19 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Type;
-
+use Illuminate\Database\QueryException;
 use Livewire\Attributes\Layout;
 
 #[Layout('layouts.app')]
+
 
 
 class TypeManager extends Component
 {
     public $name, $color, $typeId;
     public $isEditMode = false;
+    public $showDeleteModal = false;
+    public $typeToDelete;
 
     public function render()
     {
@@ -27,13 +30,15 @@ class TypeManager extends Component
         $this->color = '';
         $this->typeId = null;
         $this->isEditMode = false;
+        $this->showDeleteModal = false;
+        $this->typeToDelete = null;
     }
 
     public function store()
     {
         $this->validate([
             'name' => 'required|string|max:255',
-            'color' => 'required|string|size:6', // Hex color code
+            'color' => 'required|string|size:7', // Hex color code
         ]);
 
         Type::create([
@@ -55,11 +60,16 @@ class TypeManager extends Component
         $this->isEditMode = true;
     }
 
+    public function cancelEdit()
+    {
+        $this->resetFields();
+    }
+
     public function update()
     {
         $this->validate([
             'name' => 'required|string|max:255',
-            'color' => 'required|string|size:6',
+            'color' => 'required|string|size:7',
         ]);
 
         $type = Type::findOrFail($this->typeId);
@@ -73,9 +83,22 @@ class TypeManager extends Component
         $this->resetFields();
     }
 
-    public function delete($id)
+    public function confirmDelete($id)
     {
-        Type::findOrFail($id)->delete();
-        session()->flash('message', 'Type supprimé avec succès.');
+        $this->typeToDelete = $id;
+        $this->showDeleteModal = true;
+    }
+
+    public function delete()
+    {
+        try {
+            $type = Type::findOrFail($this->typeToDelete);
+            $type->delete();
+            session()->flash('message', 'Type supprimé avec succès.');
+        } catch (QueryException $e) {
+            session()->flash('error', 'Impossible de supprimer ce type car il est référencé par une ou plusieurs attaques.');
+        } finally {
+            $this->resetFields();
+        }
     }
 }

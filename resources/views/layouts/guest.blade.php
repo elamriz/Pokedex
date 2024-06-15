@@ -5,39 +5,95 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ $title ?? 'Pokédex' }}</title>
 
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
 
-    <!-- Scripts -->
+    <!-- Styles -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <!-- Custom Styles -->
     <style>
         body {
-    /* Définissez le fond avec votre image choisie */
-    background: url('{{ asset('storage/img/bg2.jpg') }}') repeat center center fixed;
-    background-size: 1000px; /* Assure que l'image couvre toute la page */
+            font-family: 'Nunito', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #4b0082; /* Light pastel color */
+        }
 
-    /* Ajoutez une couleur de fond avec opacité avant l'image */
-    background-color: rgba(0, 0, 0, 0.5); /* Noir avec 50% d'opacité */
-    
-    /* Assurez-vous que la couleur de fond est sous l'image */
-    background-blend-mode: darken;
-}
+        .container {
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            width: 90%;
+            max-width: 800px;
+        }
+
+        .nav {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav .logo img {
+            height: 48px;
+            width: 48px;
+            margin-right: 8px;
+        }
+
+        .nav .logo span {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: #333333;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav a:hover {
+            background-color: #f0f0f0;
+        }
+
+        .content {
+            padding: 24px;
+        }
     </style>
 </head>
 <body>
-<div class="min-h-screen flex flex-col mt-8 items-center">
-    <div class="flex justify-center items-center p-6 mb-8 rounded-3xl shadow-2xl" style="background: rgba(255, 255, 0);">
-            <a href="/pokemons" wire:navigate class="transform hover:scale-110 transition duration-300 ease-in-out">
-                <img src="{{ asset('storage/img/logo.png') }}" alt="Pokemon Logo" class="w-32 h-32"/>
-            </a>
-        </div>
-
-        <div class="p-6 rounded-lg shadow-xl" style="background: rgba(0, 0, 0, 0.2);">
+    <div class="container">
+        <nav class="nav">
+            <div class="logo">
+                <img src="{{ asset('storage/img/ball.png') }}" alt="Logo">
+                <span>{{ $title ?? 'Pokédex' }}</span>
+            </div>
+            <div>
+                @if (Route::currentRouteName() !== 'pokemon.list')
+                    <a href="{{ route('pokemon.list') }}">Liste des Pokémon</a>
+                @endif
+                @if (Route::currentRouteName() !== 'attack.list')
+                    <a href="/attack-list">Liste des Attaques</a>
+                @endif
+            </div>
+        </nav>
+        <div class="content">
             {{ $slot }}
         </div>
     </div>

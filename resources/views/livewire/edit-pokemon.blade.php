@@ -30,13 +30,13 @@
 
                 <div>
                     <label for="weight" class="block text-sm font-medium text-gray-700">Poids</label>
-                    <input type="number" wire:model="weight" id="weight" placeholder="Poids" class="border rounded p-2 w-full">
+                    <input type="number" wire:model="weight" id="weight" placeholder="Poids" class="border rounded p-2 w-full" step="0.1">
                     @error('weight') <span class="text-red-500">{{ $message }}</span> @enderror
                 </div>
 
                 <div>
                     <label for="height" class="block text-sm font-medium text-gray-700">Taille</label>
-                    <input type="number" wire:model="height" id="height" placeholder="Taille" class="border rounded p-2 w-full">
+                    <input type="number" wire:model="height" id="height" placeholder="Taille" class="border rounded p-2 w-full" step="0.01">
                     @error('height') <span class="text-red-500">{{ $message }}</span> @enderror
                 </div>
 
@@ -52,7 +52,7 @@
                 <div>
                     <label for="type1_id" class="block text-sm font-medium text-gray-700">Type 1</label>
                     <select wire:model="type1_id" id="type1_id" class="border rounded p-2 w-full">
-                        <option value="">Type 1</option>
+                        <option value="">Sélectionner Type 1</option>
                         @foreach($types as $type)
                             <option value="{{ $type->id }}">{{ $type->name }}</option>
                         @endforeach
@@ -63,7 +63,7 @@
                 <div>
                     <label for="type2_id" class="block text-sm font-medium text-gray-700">Type 2</label>
                     <select wire:model="type2_id" id="type2_id" class="border rounded p-2 w-full">
-                        <option value="">Type 2</option>
+                        <option value="">Sélectionner Type 2</option>
                         @foreach($types as $type)
                             <option value="{{ $type->id }}">{{ $type->name }}</option>
                         @endforeach
@@ -79,7 +79,7 @@
                                 <span
                                     wire:click="toggleAttack({{ $attack->id }})"
                                     class="cursor-pointer inline-flex items-center px-3 py-1 rounded-full text-sm font-medium"
-                                    style="{{ in_array($attack->id, $selectedAttacks) ? 'background-color: #' . $attack->type->color . '; color: white;' : 'background-color: #e2e8f0; color: #4a5568;' }}"
+                                    style="{{ in_array($attack->id, $selectedAttacks) ? 'background-color: ' . $attack->type->color . '; color: white;' : 'background-color: #e2e8f0; color: #4a5568;' }}"
                                 >
                                     {{ $attack->name }}
                                 </span>

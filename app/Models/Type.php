@@ -21,12 +21,20 @@ class Type extends Model
         return $this->hasMany(Attack::class);
     }
 
-    public function get2ColorClassAttribute()
+    public static function boot()
     {
-        return 'text-' . strtolower($this->name);
+        parent::boot();
+
+        static::deleting(function($type) {
+            // Supprimer toutes les attaques associées à ce type
+            $type->attacks()->each(function ($attack) {
+                $attack->delete();
+            });
+        });
     }
+
     public function getColorClassAttribute()
     {
-        return 'bg-' . strtolower($this->color) . '-600';
+        return strtolower($this->color);
     }
 }
