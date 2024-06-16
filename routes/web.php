@@ -7,7 +7,7 @@ use App\Livewire\PokemonManager;
 use App\Livewire\ManageAttacks;
 use App\Livewire\TypeManager;
 use App\Livewire\EditAttack;
-
+use App\Livewire\AttackList;
 
 Route::get('/pokemon/{pokemon}', ShowPokemon::class)->name('pokemon.show');
 Route::get('/pokemons', PokemonList::class)->name('pokemon.list');
@@ -30,7 +30,8 @@ Route::get('/create-attack', \App\Livewire\CreateAttack::class)->name('create-at
 |
 */
 
-Route::view('/', 'welcome');
+Route::get('/', PokemonList::class)->name('pokemon.list');
+Route::get('/attacks', AttackList::class)->name('attacks.list');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])

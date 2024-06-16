@@ -3,27 +3,30 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use Livewire\WithPagination;
 use App\Models\Attack;
 use Livewire\Attributes\Layout;
 
 #[Layout('layouts.app')]
 class ManageAttacks extends Component
 {
-    public $attacks;
+    use WithPagination;
+
+    public $search = '';
     public $showCreateForm = false;
     public $showEditForm = false;
     public $editAttackId = null;
 
     protected $listeners = ['attackCreated' => 'refreshAttacks', 'attackUpdated' => 'refreshAttacks', 'loadAttack' => 'loadEditForm'];
 
-    public function mount()
+    public function updatingSearch()
     {
-        $this->attacks = Attack::all();
+        $this->resetPage();
     }
 
     public function refreshAttacks()
     {
-        $this->attacks = Attack::all();
+        $this->resetPage();
     }
 
     public function toggleCreateForm()
@@ -51,6 +54,12 @@ class ManageAttacks extends Component
 
     public function render()
     {
-        return view('livewire.manage-attacks');
+        $attacks = Attack::where('name', 'like', '%' . $this->search . '%')
+                         ->orWhere('damage', 'like', '%' . $this->search . '%')
+                         ->orWhere('description', 'like', '%' . $this->search . '%')
+
+                         ->paginate(10);
+
+        return view('livewire.manage-attacks', compact('attacks'));
     }
 }

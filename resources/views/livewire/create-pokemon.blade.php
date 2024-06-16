@@ -1,10 +1,18 @@
 <x-slot name="header">
+    <div class="flex justify-between items-center">
+    
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Créer un Pokémon') }}
         </h2>
-    </x-slot>
+       
+</a>
+</x-slot>
 
     <div class="max-w-5xl mx-auto p-8 bg-white shadow-lg rounded-lg mt-8">
+    <a href="{{ route('pokemon.manager') }}" class="btn btn-square">
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+  </svg></a>
     <form wire:submit.prevent="create" class="space-y-8">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <!-- Image Upload and Preview -->

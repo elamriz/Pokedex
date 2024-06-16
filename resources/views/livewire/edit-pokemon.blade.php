@@ -5,13 +5,16 @@
     </x-slot>
 
     <div class="max-w-5xl mx-auto p-8 bg-white shadow-lg rounded-lg mt-8">
-    <h2 class="text-3xl font-bold mb-6 text-gray-800">Éditer Pokémon</h2>
 
     @if (session()->has('message'))
         <div class="mb-4 p-4 rounded bg-green-100 text-green-700">
             {{ session('message') }}
         </div>
     @endif
+    <a href="{{ route('pokemon.manager') }}" class="btn btn-square">
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+  </svg></a>
 
     <form wire:submit.prevent="update" class="space-y-8">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
