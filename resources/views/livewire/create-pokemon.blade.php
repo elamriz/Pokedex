@@ -1,5 +1,10 @@
-<div class="max-w-5xl mx-auto p-8 bg-white shadow-lg rounded-lg">
-    <h2 class="text-3xl font-bold mb-6 text-gray-800">Créer un Nouveau Pokémon</h2>
+<x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Créer un Pokémon') }}
+        </h2>
+    </x-slot>
+
+    <div class="max-w-5xl mx-auto p-8 bg-white shadow-lg rounded-lg mt-8">
     <form wire:submit.prevent="create" class="space-y-8">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <!-- Image Upload and Preview -->
@@ -26,19 +31,19 @@
                             @php
                                 $type = \App\Models\Type::find($typeId);
                             @endphp
-                            <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold text-white flex items-center" style="background-color: {{ $type->color }}">
-                                <img src="{{ $type->image }}" alt="{{ $type->name }}" class="w-6 h-6 mr-2">
-                                {{ $type->name }}
-                                <button type="button" wire:click="toggleType({{ $typeId }})" class="ml-2 text-white hover:text-gray-300">
-                                    &times;
-                                </button>
-                            </span>
+                            @if($type)
+                                <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold text-white flex items-center" style="background-color: {{ $type->color }}">
+                                    <img src="{{ $type->image }}" alt="{{ $type->name }}" class="w-6 h-6 mr-2">
+                                    {{ $type->name }}
+                                    <button type="button" wire:click="toggleType({{ $typeId }})" class="ml-2 text-white hover:text-gray-300">
+                                        &times;
+                                    </button>
+                                </span>
+                            @endif
                         @endforeach
                     </div>
                 </div>
             </div>
-            
-
 
             <!-- Nom et HP -->
             <div class="lg:col-span-2 space-y-6">
@@ -125,72 +130,90 @@
                             @php
                                 $attack = \App\Models\Attack::find($attackId);
                             @endphp
-                            <li class="flex items-center justify-between bg-gray-100 p-2 rounded-md">
-                                <div>
-                                    <span>{{ $attack->name }}</span>
-                                    <span class="text-sm text-gray-600">({{ $attack->damage }} dégâts)</span>
-                                </div>
-                                <button type="button" wire:click="removeAttack({{ $attackId }})" class="text-red-500 hover:text-red-700">Retirer</button>
-                            </li>
+                            @if($attack)
+                                <li class="flex items-center justify-between bg-gray-100 p-2 rounded-md">
+                                    <div>
+                                        <span>{{ $attack->name }}</span>
+                                        <span class="text-sm text-gray-600">({{ $attack->damage }} dégâts)</span>
+                                    </div>
+                                    <button type="button" wire:click="removeAttack({{ $attackId }})" class="text-red-500 hover:text-red-700">Retirer</button>
+                                </li>
+                            @endif
                         @endforeach
                     </ul>
                 </div>
-
+                <!-- Button to open the modal -->
+                <button type="button" wire:click="$set('showCreateAttackModal', true)" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4">
+                    Créer une attaque
+                </button>
                 <!-- Submit Button -->
                 <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                     Créer
                 </button>
-            </form>
+
+               
+            </div>
         </div>
+    </form>
 
-        <style>
-            .hp-label {
-                position: absolute;
-                top: -35px;
-                left: 50%;
-                transform: translateX(-50%);
-                background-color: white;
-                padding: 2px 8px;
-                border-radius: 4px;
-                border: 1px solid #ccc;
-                box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
-                font-size: 14px;
-                color: black;
+    <!-- Modal for creating attack -->
+    <div class="@if(!$showCreateAttackModal) hidden @endif fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-3xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-semibold text-gray-800">Créer une attaque</h3>
+                <button type="button" wire:click="$set('showCreateAttackModal', false)" class="text-gray-600 hover:text-gray-900">&times;</button>
+            </div>
+            @livewire('create-attack', ['fromModal' => true])
+        </div>
+    </div>
+
+    <style>
+        .hp-label {
+            position: absolute;
+            top: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+            font-size: 14px;
+            color: black;
+        }
+    </style>
+
+    <script>
+        function updateHPValue(value) {
+            const label = document.getElementById('hp-label');
+            label.textContent = value;
+            @this.set('hp', value);
+        }
+
+        function limitTypes(checkbox) {
+            const checkboxes = document.querySelectorAll('#type-checkboxes input[type="checkbox"]');
+            const checkedCheckboxes = document.querySelectorAll('#type-checkboxes input[type="checkbox"]:checked');
+
+            if (checkedCheckboxes.length >= 2) {
+                checkboxes.forEach(box => {
+                    if (!box.checked) {
+                        box.disabled = true;
+                    }
+                });
+            } else {
+                checkboxes.forEach(box => {
+                    box.disabled = false;
+                });
             }
-        </style>
+        }
 
-        <script>
-            function updateHPValue(value) {
-                const label = document.getElementById('hp-label');
-                label.textContent = value;
-                @this.set('hp', value);
-            }
-
-            function limitTypes(checkbox) {
-                const checkboxes = document.querySelectorAll('#type-checkboxes input[type="checkbox"]');
-                const checkedCheckboxes = document.querySelectorAll('#type-checkboxes input[type="checkbox"]:checked');
-
-                if (checkedCheckboxes.length >= 2) {
-                    checkboxes.forEach(box => {
-                        if (!box.checked) {
-                            box.disabled = true;
-                        }
-                    });
-                } else {
-                    checkboxes.forEach(box => {
-                        box.disabled = false;
-                    });
-                }
-            }
-
-            document.addEventListener('DOMContentLoaded', function () {
-                const checkboxes = document.querySelectorAll('#type-checkboxes input[type="checkbox"]');
-                checkboxes.forEach(checkbox => {
-                    checkbox.addEventListener('change', function () {
-                        limitTypes(checkbox);
-                    });
+        document.addEventListener('DOMContentLoaded', function () {
+            const checkboxes = document.querySelectorAll('#type-checkboxes input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function () {
+                    limitTypes(checkbox);
                 });
             });
-        </script>
-    </div>
+        });
+    </script>
 </div>

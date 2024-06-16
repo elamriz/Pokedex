@@ -1,4 +1,10 @@
-<div class="max-w-5xl mx-auto p-8 bg-white shadow-lg rounded-lg">
+<x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Modifier un Pokémon') }}
+        </h2>
+    </x-slot>
+
+    <div class="max-w-5xl mx-auto p-8 bg-white shadow-lg rounded-lg mt-8">
     <h2 class="text-3xl font-bold mb-6 text-gray-800">Éditer Pokémon</h2>
 
     @if (session()->has('message'))

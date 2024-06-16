@@ -1,53 +1,75 @@
-<div class="container mx-auto py-8">
-    <h2 class="text-3xl font-bold mb-6 text-gray-800">Gestion des Pokémon</h2>
+<x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Gestion des Pokémon') }}
+        </h2>
+    </x-slot>
 
-    @if (session()->has('message'))
-        <div class="mb-4 p-4 rounded bg-green-100 text-green-700">
-            {{ session('message') }}
+    <div class="container mx-auto py-8 bg-gray-100">
+
+        @if (session()->has('message'))
+            <div class="mb-4 p-4 rounded bg-green-100 text-green-700">
+                {{ session('message') }}
+            </div>
+        @endif
+
+        <div class="mb-4 flex justify-end">
+            <a href="{{ route('pokemon.create') }}" class="btn btn-primary">
+                Créer un nouveau Pokémon
+            </a>
         </div>
-    @endif
 
-    <div class="mb-4">
-        <a href="{{ route('pokemon.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            Créer un nouveau Pokémon
-        </a>
-    </div>
-
-    <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-        <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-                <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Image</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">HP</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Poids</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Taille</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type 1</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type 2</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-                @foreach($pokemons as $pokemon)
+        <div class="overflow-x-auto bg-white shadow-lg rounded-lg">
+            <table class="table w-full">
+                <thead>
                     <tr>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ str_pad($pokemon->id, 3, '0', STR_PAD_LEFT) }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <img src="{{ asset('storage/img/pokemons/' . $pokemon->image) }}" alt="{{ $pokemon->name }}" class="w-16 h-16 rounded-full object-cover">
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $pokemon->name }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $pokemon->hp }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $pokemon->weight }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $pokemon->height }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $pokemon->type1->name }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $pokemon->type2 ? $pokemon->type2->name : 'N/A' }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <a href="{{ route('pokemon.edit', $pokemon->id) }}" class="text-indigo-600 hover:text-indigo-900">Éditer</a>
-                            <button wire:click="delete({{ $pokemon->id }})" class="text-red-600 hover:text-red-900 ml-4">Supprimer</button>
-                        </td>
+                        <th class="px-4 py-2">ID</th>
+                        <th class="px-4 py-2">Image</th>
+                        <th class="px-4 py-2">Nom</th>
+                        <th class="px-4 py-2 hidden md:table-cell">HP</th>
+                        <th class="px-4 py-2 hidden lg:table-cell">Poids</th>
+                        <th class="px-4 py-2 hidden lg:table-cell">Taille</th>
+                        <th class="px-4 py-2">Type 1</th>
+                        <th class="px-4 py-2 hidden md:table-cell">Type 2</th>
+                        <th class="px-4 py-2">Actions</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach($pokemons as $pokemon)
+                        <tr>
+                            <td class="px-4 py-2">{{ str_pad($pokemon->id, 3, '0', STR_PAD_LEFT) }}</td>
+                            <td class="px-4 py-2">
+                                <div class="avatar">
+                                    <div class="mask mask-squircle w-12 h-12">
+                                        <img src="{{ asset('storage/img/pokemons/' . $pokemon->image) }}" alt="{{ $pokemon->name }}" />
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-4 py-2">{{ $pokemon->name }}</td>
+                            <td class="px-4 py-2 hidden md:table-cell">{{ $pokemon->hp }}</td>
+                            <td class="px-4 py-2 hidden lg:table-cell">{{ $pokemon->weight }}</td>
+                            <td class="px-4 py-2 hidden lg:table-cell">{{ $pokemon->height }}</td>
+                            <td class="px-4 py-2">{{ $pokemon->type1->name }}</td>
+                            <td class="px-4 py-2 hidden md:table-cell">{{ $pokemon->type2 ? $pokemon->type2->name : 'N/A' }}</td>
+                            <td class="px-4 py-2 flex flex-col lg:flex-row items-center gap-2">
+                                <a href="{{ route('pokemon.edit', $pokemon->id) }}" class="btn btn-outline btn-primary btn-sm">Éditer</a>
+                                <button wire:click="delete({{ $pokemon->id }})" class="btn btn-outline btn-error btn-sm">Supprimer</button>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th class="px-4 py-2">ID</th>
+                        <th class="px-4 py-2">Image</th>
+                        <th class="px-4 py-2">Nom</th>
+                        <th class="px-4 py-2 hidden md:table-cell">HP</th>
+                        <th class="px-4 py-2 hidden lg:table-cell">Poids</th>
+                        <th class="px-4 py-2 hidden lg:table-cell">Taille</th>
+                        <th class="px-4 py-2">Type 1</th>
+                        <th class="px-4 py-2 hidden md:table-cell">Type 2</th>
+                        <th class="px-4 py-2">Actions</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
     </div>
-</div>

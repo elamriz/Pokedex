@@ -1,5 +1,9 @@
+<x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Gestion des Types') }}
+        </h2>
+    </x-slot>
 <div class="container mx-auto py-8">
-    <h2 class="text-3xl font-bold mb-6 text-gray-800">Gestion des Types</h2>
 
     @if (session()->has('message'))
         <div class="mb-4 p-4 rounded bg-green-100 text-green-700">
@@ -16,17 +20,21 @@
     <div class="bg-white p-6 rounded-lg shadow-lg">
         <form wire:submit.prevent="{{ $isEditMode ? 'update' : 'store' }}" class="space-y-4">
             <div>
-                <label for="name" class="block text-sm font-medium text-gray-700">Nom du type</label>
-                <input type="text" wire:model="name" id="name" placeholder="Nom du type" class="border rounded p-2 w-full">
-                @error('name') <span class="text-red-500">{{ $message }}</span> @enderror
+            <label for="name" class="label">
+                            <span class="label-text">Nom du type</span>
+                        </label>
+                        <input type="text" wire:model="name" id="name" placeholder="Nom du type" class="input input-bordered w-full">
+                        @error('name') <span class="text-red-500">{{ $message }}</span> @enderror
             </div>
 
             <div>
-                <label for="color" class="block text-sm font-medium text-gray-700">Couleur (code hexadécimal)</label>
-                <div class="flex items-center">
-                    <input type="text" wire:model="color" id="color" placeholder="Couleur (ex: #FF0000)" class="border rounded p-2 w-full">
-                    <input type="color" wire:model="color" id="colorPicker" class="ml-2 border rounded p-2">
-                </div>
+            <label for="color" class="label">
+                            <span class="label-text">Couleur (code hexadécimal)</span>
+                        </label>
+                        <div class="flex items-center">
+                            <input type="text" wire:model="color" id="color" placeholder="Couleur (ex: #FF0000)" class="input input-bordered w-full">
+                            <input type="color" wire:model="color" id="colorPicker" class="ml-2 input input-bordered w-12 h-12 p-0 border-none">
+                        </div>
                 @error('color') <span class="text-red-500">{{ $message }}</span> @enderror
             </div>
 
