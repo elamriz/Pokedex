@@ -1,18 +1,17 @@
 <x-slot name="header">
     <div class="flex justify-between items-center">
-    
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Créer un Pokémon') }}
         </h2>
-       
-</a>
+        <a href="{{ route('pokemon.manager') }}" class="btn btn-square">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+        </a>
+    </div>
 </x-slot>
 
-    <div class="max-w-5xl mx-auto p-8 bg-white shadow-lg rounded-lg mt-8">
-    <a href="{{ route('pokemon.manager') }}" class="btn btn-square">
-  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-  </svg></a>
+<div class="max-w-5xl mx-auto p-8 bg-white shadow-lg rounded-lg mt-8">
     <form wire:submit.prevent="create" class="space-y-8">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <!-- Image Upload and Preview -->
@@ -36,17 +35,19 @@
                     <h3 class="text-lg font-semibold text-gray-800">Types Sélectionnés</h3>
                     <div class="flex space-x-4 mt-2">
                         @foreach($selectedTypes as $typeId)
-                            @php
-                                $type = \App\Models\Type::find($typeId);
-                            @endphp
-                            @if($type)
-                                <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold text-white flex items-center" style="background-color: {{ $type->color }}">
-                                    <img src="{{ $type->image }}" alt="{{ $type->name }}" class="w-6 h-6 mr-2">
-                                    {{ $type->name }}
-                                    <button type="button" wire:click="toggleType({{ $typeId }})" class="ml-2 text-white hover:text-gray-300">
-                                        &times;
-                                    </button>
-                                </span>
+                            @if($typeId)
+                                @php
+                                    $type = \App\Models\Type::find($typeId);
+                                @endphp
+                                @if($type)
+                                    <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold text-white flex items-center" style="background-color: {{ $type->color }}">
+                                        <img src="{{ $type->image }}" alt="{{ $type->name }}" class="w-6 h-6 mr-2">
+                                        {{ $type->name }}
+                                        <button type="button" wire:click="toggleType({{ $typeId }})" class="ml-2 text-white hover:text-gray-300">
+                                            &times;
+                                        </button>
+                                    </span>
+                                @endif
                             @endif
                         @endforeach
                     </div>
@@ -90,7 +91,7 @@
                     <label class="block text-sm font-medium text-gray-700">Types Disponibles</label>
                     <div class="flex flex-wrap mt-2 space-x-2">
                         @foreach($types as $type)
-                            <div class="inline-block mb-2 mt-">
+                            <div class="inline-block mb-2">
                                 <button type="button" wire:click="toggleType({{ $type->id }})" class="px-3 py-1 rounded-full text-sm font-semibold text-white flex items-center" style="background-color: {{ $type->color }}">
                                     <img src="{{ $type->image }}" alt="{{ $type->name }}" class="w-6 h-6 mr-2">
                                     {{ $type->name }}
@@ -158,8 +159,6 @@
                 <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                     Créer
                 </button>
-
-               
             </div>
         </div>
     </form>
@@ -197,31 +196,5 @@
             label.textContent = value;
             @this.set('hp', value);
         }
-
-        function limitTypes(checkbox) {
-            const checkboxes = document.querySelectorAll('#type-checkboxes input[type="checkbox"]');
-            const checkedCheckboxes = document.querySelectorAll('#type-checkboxes input[type="checkbox"]:checked');
-
-            if (checkedCheckboxes.length >= 2) {
-                checkboxes.forEach(box => {
-                    if (!box.checked) {
-                        box.disabled = true;
-                    }
-                });
-            } else {
-                checkboxes.forEach(box => {
-                    box.disabled = false;
-                });
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            const checkboxes = document.querySelectorAll('#type-checkboxes input[type="checkbox"]');
-            checkboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', function () {
-                    limitTypes(checkbox);
-                });
-            });
-        });
     </script>
 </div>

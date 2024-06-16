@@ -1,22 +1,19 @@
 <?php
-
 namespace App\Livewire;
 
 use Livewire\Component;
-use App\Models\Attack;
-use App\Models\Type;
 use App\Models\Pokemon;
+use App\Models\Type;
+use App\Models\Attack;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Layout;
 
 #[Layout('layouts.app')]
-
 class CreatePokemon extends Component
 {
     use WithFileUploads;
 
-    public $name, $hp, $weight, $height;
-    public $photo;
+    public $name, $hp, $weight, $height, $photo;
     public $photoPreview;
     public $selectedTypes = [];
     public $selectedAttacks = [];
@@ -44,6 +41,7 @@ class CreatePokemon extends Component
                 $this->selectedTypes[] = $typeId;
             }
         }
+        $this->selectedTypes = array_values(array_filter($this->selectedTypes));
     }
 
     public function selectAttackType($typeId)
@@ -75,17 +73,18 @@ class CreatePokemon extends Component
             'selectedAttacks' => 'required|array|min:1',
         ]);
 
-        $photoPath = $this->photo->store('photos', 'public');
+        $photoPath = $this->photo->store('img/pokemons', 'public');
 
         $pokemon = Pokemon::create([
             'name' => $this->name,
             'hp' => $this->hp,
             'weight' => $this->weight,
             'height' => $this->height,
-            'photo' => $photoPath,
+            'image' => basename($photoPath),
+            'type1_id' => $this->selectedTypes[0] ?? null,
+            'type2_id' => $this->selectedTypes[1] ?? null,
         ]);
 
-        $pokemon->types()->attach($this->selectedTypes);
         $pokemon->attacks()->attach($this->selectedAttacks);
 
         session()->flash('message', 'Pokémon créé avec succès.');

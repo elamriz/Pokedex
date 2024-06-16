@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Livewire;
 
 use Livewire\Component;
@@ -17,6 +16,7 @@ class EditPokemon extends Component
     public $pokemon;
     public $name, $hp, $weight, $height, $image, $selectedTypes = [];
     public $photo;
+    public $photoPreview;
     public $selectedAttacks = [];
     public $availableAttacks = [];
 
@@ -28,14 +28,27 @@ class EditPokemon extends Component
         $this->weight = $pokemon->weight;
         $this->height = $pokemon->height;
         $this->image = $pokemon->image;
+        $this->photoPreview = asset('storage/img/pokemons/' . $pokemon->image);
         $this->selectedTypes = array_filter([$pokemon->type1_id, $pokemon->type2_id]);
         $this->selectedAttacks = $pokemon->attacks->pluck('id')->toArray();
     }
 
-    public function render()
+    public function updatedPhoto()
     {
-        $types = Type::all();
-        return view('livewire.edit-pokemon', compact('types'));
+        $this->validate(['photo' => 'image|max:1024']);
+        $this->photoPreview = $this->photo->temporaryUrl();
+    }
+
+    public function toggleType($typeId)
+    {
+        if (in_array($typeId, $this->selectedTypes)) {
+            $this->selectedTypes = array_diff($this->selectedTypes, [$typeId]);
+        } else {
+            if (count($this->selectedTypes) < 2) {
+                $this->selectedTypes[] = $typeId;
+            }
+        }
+        $this->selectedTypes = array_values(array_filter($this->selectedTypes));
     }
 
     public function selectAttackType($typeId)
@@ -74,17 +87,6 @@ class EditPokemon extends Component
         return redirect()->route('pokemon.manager');
     }
 
-    public function toggleType($typeId)
-    {
-        if (in_array($typeId, $this->selectedTypes)) {
-            $this->selectedTypes = array_diff($this->selectedTypes, [$typeId]);
-        } else {
-            if (count($this->selectedTypes) < 2) {
-                $this->selectedTypes[] = $typeId;
-            }
-        }
-    }
-
     public function toggleAttack($attackId)
     {
         if (in_array($attackId, $this->selectedAttacks)) {
@@ -92,5 +94,11 @@ class EditPokemon extends Component
         } else {
             $this->selectedAttacks[] = $attackId;
         }
+    }
+
+    public function render()
+    {
+        $types = Type::all();
+        return view('livewire.edit-pokemon', compact('types'));
     }
 }
