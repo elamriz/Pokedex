@@ -126,7 +126,9 @@
                             @foreach($availableAttacks as $attack)
                                 <div class="bg-white shadow rounded-lg p-4 cursor-pointer hover:bg-gray-100" wire:click="toggleAttack({{ $attack->id }})">
                                     <span class="block font-semibold">{{ $attack->name }}</span>
-                                    <span class="block text-sm text-gray-600">{{ $attack->damage }} dégâts</span>
+                                    <span class="block text-sm text-gray-800">{{ $attack->damage }} dégâts</span>
+                                    <span class="block text-sm text-gray-500">{{ $attack->description }} </span>
+
                                 </div>
                             @endforeach
                         </div>
@@ -147,6 +149,7 @@
                                 <div>
                                     <span>{{ $attack->name }}</span>
                                     <span class="text-sm text-gray-600">({{ $attack->damage }} dégâts)</span>
+
                                 </div>
                                 <button type="button" wire:click="toggleAttack({{ $attackId }})" class="text-red-500 hover:text-red-700">Retirer</button>
                             </li>
