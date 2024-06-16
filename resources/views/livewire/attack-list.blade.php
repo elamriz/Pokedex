@@ -26,7 +26,7 @@
     </div>
 
     <!-- Attack list with cards using DaisyUI -->
-    <div class="w-full max-w-4xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-8 mt-8">
+    <div class="w-full max-w-4xl grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-8 mt-8">
         @foreach($attacks as $attack)
             <div class="card bordered shadow hover:shadow-md transition duration-300 ease-in-out">
                 <div class="card-body p-4">
@@ -62,7 +62,7 @@
                     @if($selectedAttack->pokemons->isEmpty())
                         <p>Aucun Pokémon trouvé pour cette attaque.</p>
                     @else
-                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4">
                             @foreach($selectedAttack->pokemons as $pokemon)
                                 <div class="card bordered shadow hover:shadow-md transition duration-300 ease-in-out">
                                     <figure>

@@ -12,15 +12,38 @@
         </div>
     @endif
 
- 
-
     @if ($showCreateForm)
-        @livewire('create-attack')
+        <div class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
+            <div class="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full overflow-y-auto" style="max-height: 90vh;">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-semibold">{{ __('Créer une attaque') }}</h2>
+                    <button wire:click="closeForm" class="text-gray-500 hover:text-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                @livewire('create-attack')
+            </div>
+        </div>
     @endif
 
     @if ($showEditForm)
-        @livewire('edit-attack', ['attackId' => $editAttackId])
+        <div class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
+            <div class="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full overflow-y-auto" style="max-height: 90vh;">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-semibold">{{ __('Éditer une attaque') }}</h2>
+                    <button wire:click="closeForm" class="text-gray-500 hover:text-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                @livewire('edit-attack', ['attackId' => $editAttackId])
+            </div>
+        </div>
     @endif
+
     <div class="flex justify-between items-center mb-6">
         <input type="text" wire:model.live.debounce.150ms="search" placeholder="Rechercher..." class="input input-bordered w-full max-w-xs" />
         <button wire:click="toggleCreateForm" class="btn btn-primary">Créer une attaque</button>

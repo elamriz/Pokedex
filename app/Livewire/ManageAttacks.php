@@ -42,6 +42,12 @@ class ManageAttacks extends Component
         $this->showCreateForm = false; // Ensure create form is hidden
     }
 
+    public function closeForm()
+    {
+        $this->showCreateForm = false;
+        $this->showEditForm = false;
+    }
+
     public function deleteAttack($id)
     {
         $attack = Attack::findOrFail($id);
@@ -57,7 +63,6 @@ class ManageAttacks extends Component
         $attacks = Attack::where('name', 'like', '%' . $this->search . '%')
                          ->orWhere('damage', 'like', '%' . $this->search . '%')
                          ->orWhere('description', 'like', '%' . $this->search . '%')
-
                          ->paginate(10);
 
         return view('livewire.manage-attacks', compact('attacks'));

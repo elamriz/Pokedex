@@ -1,4 +1,4 @@
-<div class="flex justify-center bg-gray-100 py-8">
+<div class="flex justify-center -100 py-8">
     <div class="bg-base-100 p-6 rounded-lg shadow-lg w-full max-w-3xl">
         @if (session()->has('message'))
             <div class="mb-4 p-4 rounded bg-green-100 text-green-700">
