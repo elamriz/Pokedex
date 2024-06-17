@@ -1,4 +1,4 @@
-<div class="container mx-auto py-8 ">
+<div class="container mx-auto  ">
     <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
         <!-- Input search with DaisyUI style -->
         <div class="form-control w-full sm:w-3/4">
@@ -26,7 +26,7 @@
     </div>
 
     <!-- Attack list with cards using DaisyUI -->
-    <div class="w-full max-w-4xl grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-8 mt-8">
+    <div class="w-full max-w-4xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-8 mt-8">
         @foreach($attacks as $attack)
             <div class="card bordered shadow hover:shadow-md transition duration-300 ease-in-out">
                 <div class="card-body p-4">
