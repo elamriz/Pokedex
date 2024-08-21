@@ -48,8 +48,8 @@
 
     <!-- Modal for showing Pokémon details -->
     @if($showPokemonModal)
-    <div class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
-    <div class="bg-white rounded-2xl shadow-lg max-w-xs sm:max-w-md lg:max-w-lg w-full overflow-y-auto" style="max-height: 80vh;">
+<div class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50" wire:click="closeModal">
+    <div class="bg-white rounded-2xl shadow-lg max-w-xs sm:max-w-md lg:max-w-lg w-full overflow-y-auto" style="max-height: 80vh;" wire:click.stop>
         <div class="sticky top-0 bg-gray-100 p-2 flex justify-between items-center rounded-t-2xl z-10">
             <button wire:click="closeModal" class="text-gray-500 hover:text-gray-700">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -65,6 +65,7 @@
         </div>
 
         <div class="p-4">
+            <!-- Pokémon details -->
             <div class="flex justify-center space-x-2 mb-4">
                 <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold text-white flex items-center" style="background-color: {{ $selectedPokemon->type1->color }}">
                     <img src="{{ $selectedPokemon->type1->image }}" alt="{{ $selectedPokemon->type1->name }}" class="w-6 h-6 mr-2">
@@ -120,9 +121,6 @@
         </div>
     </div>
 </div>
+@endif
 
-
-
-
-    @endif
 </div>
