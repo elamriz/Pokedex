@@ -27,7 +27,7 @@
     <!-- Pokémon list with cards using DaisyUI -->
     <div class="w-full max-w-4xl grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-8 mt-8">
         @foreach($pokemons as $pokemon)
-            <div class="card bordered shadow hover:shadow-md transition duration-300 ease-in-out" wire:click="showPokemonDetails({{ $pokemon->id }})">
+            <div class="card bordered shadow hover:shadow-md transition duration-300 ease-in-out cursor-pointer" wire:click="showPokemonDetails({{ $pokemon->id }})">
                 <figure>
                     <img src="{{ asset('storage/img/pokemons/' . $pokemon->image) }}" alt="{{ $pokemon->name }}" class="w-full h-40 object-cover rounded-t-lg">
                 </figure>
